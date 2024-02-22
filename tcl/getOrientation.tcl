@@ -1,40 +1,16 @@
-source Messaging.tm
+source Utils.tm
 
 global DEBUG
 # default value
 set DEBUG false  
 
-#-------------------------------
-proc isa_int {foo} {
-    if {[string is double -strict $foo]} {
-        return true
-    }
-    return false
-}
-
-#-------------------------------
-proc isa_bbox { bBox } {
-    lassign [eval list {*}$bBox ] P1x P1y P2x P2y
-
-    set num_vals [llength [eval list {*}$bBox] ] 
-    if { $num_vals != 2*2 } {
-        eprint "Wrong bbox size. Expected 4 values but has $num_vals!"
-        return false
-    }
-    foreach coord [eval list {*}$bBox]  {
-        if { ! [isa_int $coord] } {
-            eprint "Value in bbox provided is not an integer: '$coord'"
-            return false
-        }
-    }
-    return true
-}
 
 #-------------------------------
 proc getOrientation {bBox} {
     global DEBUG
     # validate_struct mat:2:2:$bBox
     lassign [eval list {*}$bBox ] P1x P1y P2x P2y
+  
     if { ! [isa_bbox $bBox] } { 
         return false
     }
